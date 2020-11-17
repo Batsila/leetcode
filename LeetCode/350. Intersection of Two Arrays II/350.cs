@@ -6,7 +6,7 @@ public class Solution
         
         foreach (var e in nums1)
         {
-            if (!d.ContainsKey(e))
+            if (d.ContainsKey(e))
             {
                 d[e] += 1;
             }
