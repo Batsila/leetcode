@@ -4,13 +4,10 @@ public:
     string removeDuplicates(string str) 
     {
         stack<char> s;
-        s.push(str[0]);
         
-        int i = 1;
-        
-        while (i < str.size())
+        for (int i = 0; i < str.size(); ++i)
         {
-            if (!s.empty() && s.top() == str[i])
+            if (not s.empty() and s.top() == str[i])
             {
                 s.pop();
             }
@@ -18,8 +15,6 @@ public:
             {
                 s.push(str[i]);
             }
-            
-            ++i;
         }
         
         string ans = "";
