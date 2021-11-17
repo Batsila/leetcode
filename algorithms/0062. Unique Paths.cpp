@@ -1,18 +1,9 @@
 class Solution 
 {
-    int dp[100][100];
 public:
     int uniquePaths(int m, int n) 
     {
-        for (int i = 0; i < m; ++i)
-        {
-            dp[i][0] = 1;
-        }
-        
-        for (int i = 0; i < n; ++i)
-        {
-            dp[0][i] = 1;
-        }
+        vector<vector<int>> dp = vector(m, vector(n, 1));
         
         for (int i = 1; i < m; ++i)
         {
