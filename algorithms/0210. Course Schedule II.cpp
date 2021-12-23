@@ -7,16 +7,12 @@ public:
     
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) 
     {
-        for (int i = 0; i < numCourses; ++i)
-        {
-            c.push_back(0);
-            vector<int> t;
-            g.push_back(t);
-        }
+        c = vector<int>(numCourses);
+        g = vector<vector<int>>(numCourses, vector<int>());
         
-        for (int i = 0; i < prerequisites.size(); ++i)
+        for (vector<int> prerequisite : prerequisites)
         {
-            g[prerequisites[i][1]].push_back(prerequisites[i][0]);
+            g[prerequisite[1]].push_back(prerequisite[0]);
         }
         
         for (int i = 0; i < numCourses; ++i)
@@ -25,8 +21,7 @@ public:
             {
                 if (!dfs(i))
                 {
-                    ans.clear();
-                    return ans;
+                    return {};
                 }
             }
         }
@@ -40,9 +35,8 @@ public:
     {
         c[v] = 1;
         
-        for (int i = 0; i < g[v].size(); ++i)
+        for (int u : g[v])
         {
-            int u = g[v][i];
             if (!c[u])
             {
                 if (!dfs(u))
