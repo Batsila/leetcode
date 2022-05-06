@@ -1,45 +1,34 @@
-class Solution 
+class Solution
 {
 public:
-    string removeDuplicates(string str, int k) 
+    string removeDuplicates(string str, int k)
     {
         stack<pair<char, int>> s;
-        s.push(make_pair(str[0], 1));
         
-        int i = 1;
-        
-        while (i < str.size())
+        for (char c : str)
         {
-            if (!s.empty() && s.top().first == str[i])
+            if (not s.empty() and s.top().first == c)
             {
-                if (s.top().second + 1 == k)
-                {
-                    s.pop();
-                }
-                else
-                {
-                    auto p = make_pair(str[i], s.top().second + 1);
-                    s.pop();
-                    s.push(p);
-                }
+                ++s.top().second;
             }
             else
             {
-                s.push(make_pair(str[i], 1));
+                s.push(make_pair(c, 1));
             }
             
-            ++i;
+            if (s.top().second == k)
+            {
+                s.pop();
+            }
         }
         
         string ans = "";
         
-        while (!s.empty())
+        while (not s.empty())
         {
-            auto p = s.top();
-            
-            for (int j = 0; j < p.second; ++j)
+            for (int i = 0; i < s.top().second; ++i)
             {
-                ans += p.first;
+                ans += s.top().first;
             }
             
             s.pop();
