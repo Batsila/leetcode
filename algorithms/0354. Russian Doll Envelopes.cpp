@@ -4,26 +4,26 @@ public:
     int maxEnvelopes(vector<vector<int>>& envelopes) 
     {
         sort(envelopes.begin(), envelopes.end(),
-            [](vector<int> a, vector<int> b)
+            [](vector<int>& a, vector<int>& b)
              {
-                 return a[0] == b[0] ? a[1] < b[1] : a[0] < b[0];
+                 return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
              });
         
-        vector<int> dp(envelopes.size(), 1);
-        int ans = 1;
+        vector<int> dp;
         
-        for(int i = 1; i < envelopes.size(); ++i)
+        for (auto& env : envelopes)
         {
-            for(int j = 0; j < i; ++j)
+            int height = env[1];
+            int left = lower_bound(dp.begin(), dp.end(), height) - dp.begin();
+            
+            if (left == dp.size())
             {
-                if(envelopes[j][0] < envelopes[i][0] && envelopes[j][1] < envelopes[i][1])
-                {
-                    dp[i] = max(dp[i], dp[j] + 1);
-                    ans = max(ans, dp[i]);
-                }
+                dp.push_back(height);
             }
+            
+            dp[left] = height;
         }
         
-        return ans;
+        return dp.size();
     }
 };
