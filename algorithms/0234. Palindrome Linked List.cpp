@@ -12,7 +12,7 @@ class Solution {
 public:
     bool isPalindrome(ListNode* head) 
     {
-        if(!head)
+        if (not head)
         {
             return false;
         }
@@ -20,7 +20,7 @@ public:
         ListNode* s = head;
         ListNode* f = head;
         
-        while(f && f->next)
+        while (f and f->next)
         {
             s = s->next;
             f = f->next->next;
@@ -28,7 +28,7 @@ public:
         
         ListNode* m;
         
-        if(f)
+        if (f)
         {
             m = s->next;
         }
@@ -41,7 +41,7 @@ public:
         ListNode* n;
         ListNode* p = NULL;
         
-        while(c)
+        while (c)
         {
             n = c->next;
             c->next = p;
@@ -49,9 +49,9 @@ public:
             c = n;
         }
         
-        while(p)
+        while (p)
         {
-            if(head->val != p->val)
+            if (head->val != p->val)
             {
                 return false;
             }
