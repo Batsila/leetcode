@@ -1,11 +1,12 @@
 class Solution
 {
-    int dp[1000][10000];
 public:
     int findLength(vector<int>& A, vector<int>& B)
     {
         int n = A.size();
 	    int m = B.size();
+        
+        vector<vector<int>> dp(n, vector<int>(m, 0));
 	    
 	    for (int i = 0; i < n; ++i)
 	    {
