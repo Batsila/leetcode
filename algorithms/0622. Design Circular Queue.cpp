@@ -47,7 +47,7 @@ public:
     
     int Rear() 
     {
-        return v[(tail - 1) % capacity];
+        return v[(tail - 1 + capacity) % capacity];
     }
     
     bool isEmpty() 
