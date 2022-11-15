@@ -14,11 +14,8 @@ class Solution
 public:
     int countNodes(TreeNode* root)
     {
-        if (not root)
-        {
-            return 0;
-        }
-        
-        return countNodes(root->left) + countNodes(root->right) + 1;
+        return root
+            ? countNodes(root->left) + countNodes(root->right) + 1
+            : 0;
     }
 };
