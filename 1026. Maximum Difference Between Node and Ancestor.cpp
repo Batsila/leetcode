@@ -12,19 +12,22 @@
 class Solution
 {
 public:
-    int maxAncestorDiff(TreeNode* root, int minimum = INT_MAX, int maximum = INT_MIN)
+    int maxAncestorDiff(
+        TreeNode* root,
+        int minimum = INT_MAX,
+        int maximum = INT_MIN)
     {
-        if (not root)
+        if (root)
         {
-            return maximum - minimum;
+            minimum = min(minimum, root->val);
+            maximum = max(maximum, root->val);
+        
+            int l = maxAncestorDiff(root->left, minimum, maximum);
+            int r = maxAncestorDiff(root->right, minimum, maximum);
+        
+            return max(l, r);
         }
         
-        minimum = min(minimum, root->val);
-        maximum = max(maximum, root->val);
-        
-        int l = maxAncestorDiff(root->left, minimum, maximum);
-        int r = maxAncestorDiff(root->right, minimum, maximum);
-        
-        return max(l, r);
+        return maximum - minimum;
     }
 };
