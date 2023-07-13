@@ -6,12 +6,8 @@ public:
     
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) 
     {
-        for (int i = 0; i < numCourses; ++i)
-        {
-            c.push_back(0);
-            vector<int> t;
-            g.push_back(t);
-        }
+        c = vector<int>(numCourses, 0);
+        g = vector<vector<int>>(numCourses, vector<int>());
         
         for (int i = 0; i < prerequisites.size(); ++i)
         {
@@ -39,6 +35,7 @@ public:
         for (int i = 0; i < g[v].size(); ++i)
         {
             int u = g[v][i];
+
             if (!c[u])
             {
                 if (!dfs(u))
