@@ -1,33 +1,32 @@
 class Solution
 {
-    bool used[1000];
-
 public:
     bool canVisitAllRooms(vector<vector<int>>& rooms)
-    {   
-        dfs(0, rooms);
+    {
+        vector<bool> visited(rooms.size(), false);
+
+        dfs(0, rooms, visited);
         
         for (int i = 0; i < rooms.size(); ++i)
         {
-            if (!used[i])
+            if (not visited[i])
             {
                 return false;
             }
         }
         
         return true;
-        
     }
     
-    void dfs(int v, vector<vector<int>>& g)
+    void dfs(int v, vector<vector<int>>& graph, vector<bool>& visited)
     {
-        used[v] = 1;
+        visited[v] = true;
         
-        for (int u : g[v])
+        for (int u : graph[v])
         {
-            if (!used[u])
+            if (not visited[u])
             {
-                dfs(u, g);
+                dfs(u, graph, visited);
             }   
         }
     }
