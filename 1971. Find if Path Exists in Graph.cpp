@@ -3,8 +3,17 @@ class Solution
 public:
     bool validPath(int n, vector<vector<int>>& edges, int source, int destination)
     {
+        vector<bool> visited(n, false);
+        vector<vector<int>> graph = buildGraph(n, edges);
+
+        dfsRecursion(source, graph, visited);
+
+        return visited[destination];
+    }
+
+    vector<vector<int>> buildGraph(int n, vector<vector<int>>& edges)
+    {
         vector<vector<int>> graph(n, vector<int>());
-        vector<bool> used(n);
 
         for (auto edge : edges)
         {
@@ -12,20 +21,62 @@ public:
             graph[edge[1]].push_back(edge[0]);
         }
 
-        dfs(source, graph, used);
-
-        return used[destination];
+        return graph;
     }
 
-    void dfs(int v, vector<vector<int>>& graph, vector<bool>& used)
+    void bfs(int start, vector<vector<int>>& graph, vector<bool>& visited)
     {
-        used[v] = true;
+        queue<int> q;
+        q.push(start);
+        visited[start] = true;
+
+        while (not q.empty())
+        {
+            int v = q.front();
+            q.pop();
+
+            for (int u : graph[v])
+            {
+                if (not visited[u])
+                {
+                    visited[u] = true;
+                    q.push(u);
+                }
+            }
+        }
+    }
+
+    void dfs(int start, vector<vector<int>>& graph, vector<bool>& visited)
+    {
+        stack<int> s;
+        s.push(start);
+        visited[start] = true;
+
+        while (not s.empty())
+        {
+            int v = s.top();
+            s.pop();
+
+            for (int u : graph[v])
+            {
+                if (not visited[u])
+                {
+                    visited[u] = true;
+                    s.push(u);
+                }
+            }
+        }
+    }
+
+    void dfsRecursion(int v, vector<vector<int>>& graph, vector<bool>& visited)
+    {
+        visited[v] = true;
 
         for (int u : graph[v])
         {
-            if (!used[u])
+            if (not visited[u])
             {
-                dfs(u, graph, used);
+                dfsRecursion(u, graph, visited);
             }
         }
     }
