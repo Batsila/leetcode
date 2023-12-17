@@ -1,41 +1,43 @@
 class Solution
 {
-    vector<vector<int>> ans;
-    vector<vector<int>> g;
-    vector<bool> used;
-    vector<int> path;
 public:
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph)
     {
-        g = graph;
-        used = vector<bool>(g.size());
-        dfs(0);
+        vector<bool> visited = vector<bool>(graph.size());
+        vector<vector<int>> result;
+        vector<int> path;
         
-        return ans;
+        dfs(0, graph, visited, path, result);
+
+        return result;
     }
     
-    void dfs(int v)
+    void dfs(
+        int v,
+        vector<vector<int>>& graph,
+        vector<bool>& visited,
+        vector<int>& path,
+        vector<vector<int>>& result)
     {
-        used[v] = true;
+        visited[v] = true;
         path.push_back(v);
         
-        if (v == g.size() - 1)
+        if (v == graph.size() - 1)
         {
-            vector<int> t = vector<int>(path);
-            ans.push_back(t);
+            result.push_back(path);
         }
         else
         {
-            for (int u : g[v])
+            for (int u : graph[v])
             {
-                if (not used[u])
+                if (not visited[u])
                 {
-                    dfs(u);
+                    dfs(u, graph, visited, path, result);
                 }
             }
         }
         
         path.pop_back();
-        used[v] = false;
+        visited[v] = false;
     }
 };
