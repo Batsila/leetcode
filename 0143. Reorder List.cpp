@@ -13,36 +13,41 @@ class Solution
 public:
     void reorderList(ListNode* head)
     {
-        vector<ListNode*> nodes;
-        
-        ListNode* c = head;
-        
-        while (c)
+        // find mid
+        auto fast = head;
+        auto slow = head;
+
+        while (fast and fast->next)
         {
-            nodes.push_back(c);
-            c = c->next;
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        
-        int l = 0;
-        int r = nodes.size() - 1;
-        c = head;
-        
-        for (int i = 0; i < nodes.size(); ++i)
+
+        // reverse 2nd half
+        auto current = slow->next; // mid
+        ListNode* previous = NULL;
+
+        while (current)
         {
-            if (i % 2 == 0)
-            {
-                c->next = nodes[l];
-                ++l;
-            }
-            else
-            {
-                c->next = nodes[r];
-                --r;
-            }
-            
-            c = c->next;
+            auto temp = current->next;
+            current->next = previous;
+            previous = current;
+            current = temp;
         }
-        
-        c->next = NULL;
+
+        // merge
+        slow->next = NULL;
+        auto mid = previous;
+        current = head;
+
+        while (mid)
+        {
+            auto t1 = current->next;
+            current->next = mid;
+            auto t2 = mid->next;
+            current->next->next = t1;
+            mid = t2;
+            current = current->next->next;
+        }
     }
 };
