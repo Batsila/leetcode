@@ -1,24 +1,22 @@
 class Solution
 {
-    int s[50001];
 public:
     vector<int> findDuplicates(vector<int>& nums)
     {
+        vector<int> ans;
+
         for (int num : nums)
         {
-            ++s[num];
-        }
-        
-        vector<int> ans;
-        
-        for (int i = 0; i < nums.size(); ++i)
-        {
-            if (s[i + 1] == 2)
+            if (nums[abs(num) - 1] > 0)
             {
-                ans.push_back(i + 1);
+                nums[abs(num) - 1] *= -1;
+            }
+            else
+            {
+                ans.push_back(abs(num));
             }
         }
-        
+
         return ans;
     }
 };
