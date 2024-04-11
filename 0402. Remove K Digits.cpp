@@ -3,58 +3,45 @@ class Solution
 public:
     string removeKdigits(string num, int k)
     {
-        if (num.size() <= k)
+        if (k == num.size())
         {
             return "0";
         }
         
-        if (not k)
-        {
-            return num;
-        }
-        
-        stack<char> s;
-        
-        s.push(num[0]);
+        deque<int> new_num;
+        new_num.push_back(num[0]);
         
         for (int i = 1; i < num.size(); ++i)
         {
-            while (k and not s.empty() and s.top() > num[i])
+            while (k > 0
+                and not new_num.empty()
+                and new_num.back() > num[i])
             {
-                s.pop();
+                new_num.pop_back();
                 --k;
             }
-            
-            s.push(num[i]);
-            
-            if (s.size() == 1 and num[i] == '0')
-            {
-                s.pop();
-            }
+
+            new_num.push_back(num[i]);
         }
-        
-        while (k and not s.empty())
+
+        while (k > 0 and not new_num.empty())
         {
-            s.pop();
+            new_num.pop_back();
             --k;
         }
-        
+
         string ans = "";
-        
-        
-        while (s.size())
+
+        while (not new_num.empty())
         {
-            ans.push_back(s.top());
-            s.pop();
+            if (ans.size() != 0 or new_num.front() != '0')
+            {
+                ans += new_num.front();
+            }
+            
+            new_num.pop_front();
         }
-        
-        reverse(ans.begin(), ans.end());
-        
-        if (not ans.size())
-        {
-            return "0";
-        }
-        
-        return ans;
+
+        return ans == "" ? "0" : ans;
     }
 };
