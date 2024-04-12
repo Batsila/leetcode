@@ -3,48 +3,36 @@ class Solution
 public:
     int trap(vector<int>& height)
     {
-        if (height.size() == 0)
+        int n = height.size();
+        vector<int> limits(n);
+        int left_limit = 0;
+
+        for (int i = 0; i < n; ++i)
         {
-            return 0;
+            limits[i] = left_limit;
+            left_limit = max(left_limit, height[i]);
         }
-        
-        vector<int> l(height.size(), 0);
-        int ml = height[0];
-        
-        for (int i = 1; i < height.size(); ++i)
+
+        int right_limit = 0;
+
+        for (int i = n - 1; i >= 0; --i)
         {
-            if (height[i] >= ml)
-            {
-                ml = height[i];
-            }
-            else
-            {
-                l[i] = ml - height[i];
-            }
+            limits[i] = min(right_limit, limits[i]);
+            right_limit = max(right_limit, height[i]);
         }
-        
-        vector<int> r(height.size(), 0);
-        int mr = height[height.size() - 1];
-        
-        for (int i = height.size() - 2; i >= 0; --i)
-        {
-            if (height[i] >= mr)
-            {
-                mr = height[i];
-            }
-            else
-            {
-                r[i] = mr - height[i];
-            }
-        }
-        
+
         int ans = 0;
-        
-        for (int i = 0; i < l.size(); ++i)
+
+        for (int i = 0; i < n; ++i)
         {
-            ans += min(l[i], r[i]);
+            int capacity = limits[i] - height[i];
+
+            if (capacity > 0)
+            {
+                ans += capacity;
+            }
         }
-        
+
         return ans;
     }
 };
