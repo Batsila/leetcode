@@ -14,18 +14,20 @@ class Solution
 public:
     int sumNumbers(TreeNode* root, int sum=0)
     {
-        if (not root)
+        if (root)
+        {
+            sum = sum * 10 + root->val;
+        
+            if (not root->left and not root->right)
+            {
+                return sum;
+            }
+        
+            return sumNumbers(root->left, sum) + sumNumbers(root->right, sum);
+        }
+        else
         {
             return 0;
         }
-        
-        sum = sum * 10 + root->val;
-        
-        if (not root->left and not root->right)
-        {
-            return sum;
-        }
-        
-        return sumNumbers(root->left, sum) + sumNumbers(root->right, sum);
     }
 };
