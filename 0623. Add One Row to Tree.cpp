@@ -22,16 +22,18 @@ public:
             return ans;
         }
         
-        dfs(root, val, depth, 1);
+        dfs(root, val, depth);
         
         return root;
     }
     
-    void dfs(TreeNode* node, int val, int depth, int pd)
+    void dfs(TreeNode* node, int val, int traget_depth, int current_depth = 1)
     {
         if (node)
         {
-            if (pd + 1 == depth)
+            ++current_depth;
+
+            if (current_depth == traget_depth)
             {
                 auto t = node->left;
                 node->left = new TreeNode(val);
@@ -42,8 +44,8 @@ public:
             }
             else
             {
-                dfs(node->left, val, depth, pd + 1);
-                dfs(node->right, val, depth, pd + 1);
+                dfs(node->left, val, traget_depth, current_depth);
+                dfs(node->right, val, traget_depth, current_depth);
             }
         }
     }
