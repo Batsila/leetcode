@@ -1,22 +1,20 @@
 class Solution
 {
-    vector<vector<char>> g;
     int dx[4] = { -1, 0, 1, 0 };
     int dy[4] = { 0, -1, 0, 1 };
 public:
     int numIslands(vector<vector<char>>& grid)
     {
         int ans = 0;
-        g = grid;
         
-        for (int i = 0; i < g.size(); ++i)
+        for (int i = 0; i < grid.size(); ++i)
         {
-            for (int j = 0; j < g[i].size(); ++j)
+            for (int j = 0; j < grid[i].size(); ++j)
             {
-                if (g[i][j] == '1')
+                if (grid[i][j] == '1')
                 {
                     ++ans;
-                    dfs(i, j);
+                    dfs(i, j, grid);
                 }
             }
         }
@@ -24,22 +22,22 @@ public:
         return ans;
     }
     
-    void dfs(int x, int y)
+    void dfs(int x, int y, vector<vector<char>>& grid)
     {
         if (x < 0 
-            or x >= g.size() 
+            or x >= grid.size() 
             or y < 0 
-            or y >= g[0].size() 
-            or g[x][y] == '0')
+            or y >= grid[0].size() 
+            or grid[x][y] == '0')
         {
             return;
         }
         
-        g[x][y] = '0';
+        grid[x][y] = '0';
         
         for (int i = 0; i < 4; ++i)
         {
-            dfs(x + dx[i], y + dy[i]);
+            dfs(x + dx[i], y + dy[i], grid);
         }
     }
 };
