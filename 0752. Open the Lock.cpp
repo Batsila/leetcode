@@ -3,49 +3,47 @@ class Solution
 public:
     int openLock(vector<string>& deadends, string target)
     {
-        unordered_set<string> d(deadends.begin(), deadends.end());
+        unordered_set<string> used = unordered_set<string>(deadends.begin(), deadends.end());
+        queue<string> next_lvl_nums;
+        int current_lvl = 0;
         
-        queue<string> q;
-        
-        if (d.find("0000") == d.end())
+        if (used.find("0000") == used.end())
         {
-            q.push("0000");
+            next_lvl_nums.push("0000");
         }
         
-        int ans = 0;
-        
-        while (!q.empty())
+        while (not next_lvl_nums.empty())
         {
-            queue<string> cq = q;
-            q = queue<string>();
+            queue<string> current_lvl_nums = next_lvl_nums;
+            next_lvl_nums = queue<string>();
             
-            while (!cq.empty())
+            while (not current_lvl_nums.empty())
             {
-                string c = cq.front();
-                cq.pop();
+                string current_num = current_lvl_nums.front();
+                current_lvl_nums.pop();
                 
-                if (c == target)
+                if (current_num == target)
                 {
-                    return ans;
+                    return current_lvl;
                 }
                 
-                for (string n : get_n(c))
+                for (string num : get_neighbors(current_num))
                 {
-                    if (d.find(n) == d.end())
+                    if (used.find(num) == used.end())
                     {
-                        q.push(n);
-                        d.insert(n);
+                        used.insert(num);
+                        next_lvl_nums.push(num);
                     }
                 }
             }
             
-            ++ans;
+            ++current_lvl;
         }
-        
+
         return -1;
     }
-    
-    vector<string> get_n(string s)
+
+    vector<string> get_neighbors(string s)
     {
         vector<string> v;
         
