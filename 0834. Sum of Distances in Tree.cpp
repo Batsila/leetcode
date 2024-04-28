@@ -1,51 +1,56 @@
 class Solution
 {
-    int N;
-    vector<vector<int>> g;
-    vector<int> ans;
-    vector<int> c;
 public:
     vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges)
     {
-        N = n;
-        g = vector<vector<int>>(n, vector<int>());
+        vector<vector<int>> graph(n, vector<int>());
         
         for (auto edge : edges)
         {
-            g[edge[0]].push_back(edge[1]);
-            g[edge[1]].push_back(edge[0]);
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
         }
         
-        ans = vector<int>(n, 0);
-        c = vector<int>(n, 1);
+        vector<int> nodesInSubTree(n, 1);
+        vector<int> ans(n, 0);
         
-        dfs(0, -1);
-        dfs2(0, -1);
+        calculateSubTreesSum(0, -1, graph, nodesInSubTree, ans);
+        addBackwardPathSum(0, -1, graph, nodesInSubTree, ans);
         
         return ans;
     }
     
-    void dfs(int v, int p)
+    void calculateSubTreesSum(
+        int currentNode,
+        int previousNode,
+        vector<vector<int>>& graph,
+        vector<int>& nodesInSubTree,
+        vector<int>& ans)
     {
-        for (int u : g[v])
+        for (int adjacentNode : graph[currentNode])
         {
-            if (u != p)
+            if (adjacentNode != previousNode)
             {
-                dfs(u, v);
-                c[v] += c[u];
-                ans[v] += ans[u] + c[u];
+                calculateSubTreesSum(adjacentNode, currentNode, graph, nodesInSubTree, ans);
+                nodesInSubTree[currentNode] += nodesInSubTree[adjacentNode];
+                ans[currentNode] += ans[adjacentNode] + nodesInSubTree[adjacentNode];
             }
         }
     }
     
-    void dfs2(int v, int p)
+    void addBackwardPathSum(
+        int currentNode,
+        int previousNode,
+        vector<vector<int>>& graph,
+        vector<int>& nodesInSubTree,
+        vector<int>& ans)
     {
-        for (int u : g[v])
+        for (int adjacentNode : graph[currentNode])
         {
-            if (u != p)
+            if (adjacentNode != previousNode)
             {
-                ans[u] = ans[v] - 2 * c[u] + N;
-                dfs2(u, v);
+                ans[adjacentNode] = ans[currentNode] - nodesInSubTree[adjacentNode] + (graph.size() - nodesInSubTree[adjacentNode]);
+                addBackwardPathSum(adjacentNode, currentNode, graph, nodesInSubTree, ans);
             }
         }
     }
