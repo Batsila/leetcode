@@ -13,41 +13,39 @@
  */
 public class Solution 
 {
-    private List<int> list;
+    private List<int> nodes = new List<int>();
         
     public TreeNode BalanceBST(TreeNode root) 
     {
-        list = new List<int>();
-        
         Dfs(root);
         
-        return CreateBalancedBST(0, list.Count() - 1);
+        return CreateBalancedBST(0, nodes.Count - 1);
     }
     
-    public TreeNode CreateBalancedBST(int l, int r)
+    public TreeNode CreateBalancedBST(int left, int right)
     {
-        if (r < l)
+        if (left <= right)
+        {
+            int mid = (left + right) / 2;
+        
+            var leftNode = CreateBalancedBST(left, mid - 1);
+            var rightNode = CreateBalancedBST(mid + 1, right);
+        
+            return new TreeNode(nodes[mid], leftNode, rightNode);
+        }
+        else
         {
             return null;
         }
-        
-        int c = (r + l) / 2;
-        
-        var ln = CreateBalancedBST(l, c - 1);
-        var rn = CreateBalancedBST(c + 1, r);
-        
-        return new TreeNode(list[c], ln, rn);
     }
     
     public void Dfs(TreeNode node)
     {
-        if (node == null)
+        if (node != null)
         {
-            return;
+            Dfs(node.left);
+            nodes.Add(node.val);
+            Dfs(node.right);
         }
-        
-        Dfs(node.left);
-        list.Add(node.val);
-        Dfs(node.right);
     }
 }
