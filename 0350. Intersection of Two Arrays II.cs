@@ -2,31 +2,31 @@ public class Solution
 {
     public int[] Intersect(int[] nums1, int[] nums2) 
     {
-        var d = new Dictionary<int, int>();
+        var frequencies = new Dictionary<int, int>();
         
-        foreach (var e in nums1)
+        foreach (var num in nums1)
         {
-            if (d.ContainsKey(e))
+            if (frequencies.ContainsKey(num))
             {
-                d[e] += 1;
+                ++frequencies[num];
             }
             else
             {
-                d.Add(e, 1);
+                frequencies.Add(num, 1);
             }
         }
         
-        var ans = new List<int>();
+        var result = new List<int>();
         
-        foreach (var e in nums2)
+        foreach (var num in nums2)
         {
-            if (d.ContainsKey(e) && d[e] > 0)
+            if (frequencies.ContainsKey(num) && frequencies[num] > 0)
             {
-                ans.Add(e);
-                d[e] -= 1;
+                result.Add(num);
+                --frequencies[num];
             }
         }
         
-        return ans.ToArray();
+        return result.ToArray();
     }
 }
