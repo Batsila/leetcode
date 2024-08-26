@@ -18,27 +18,27 @@ public:
 };
 */
 
-class Solution 
+class Solution
 {
-    vector<int> ans;
 public:
-    vector<int> postorder(Node* root) 
+    vector<int> postorder(Node* root)
     {
-        dfs(root);
-        
-        return ans;
+        vector<int> result;
+        postorder_traversal(root, result);
+
+        return result;
     }
-    
-    void dfs(Node* node)
+private:
+    void postorder_traversal(Node* node, vector<int>& result)
     {
         if (node)
         {
-            for (auto c : node->children)
+            for (auto child : node->children)
             {
-               dfs(c); 
+                postorder_traversal(child, result);
             }
-            
-            ans.push_back(node->val);
+
+            result.push_back(node->val);
         }
     }
 };
