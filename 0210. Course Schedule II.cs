@@ -2,55 +2,37 @@ public class Solution
 {
     public int[] FindOrder(int numCourses, int[][] prerequisites)
     {
-        var order = new List<int>();
-        var states = new int[numCourses]; // 0 - not visited, 1 - in, 2 - out
+        var result = new List<int>();
+        var indegrees = new int[numCourses];
         var graph = Enumerable.Range(0, numCourses).Select(x => new List<int>()).ToList();
 
         foreach (var prerequisite in prerequisites)
         {
-            graph[prerequisite[0]].Add(prerequisite[1]);
+            graph[prerequisite[1]].Add(prerequisite[0]);
+            ++indegrees[prerequisite[0]];
         }
 
-        for (int course = 0; course < numCourses; ++course)
+        for (int i = 0; i < indegrees.Length; ++i)
         {
-            if (states[course] == 0)
+            if (indegrees[i] == 0)
             {
-                if (!TrySort(course, graph, states, order))
+                result.Add(i);
+            }
+        }
+
+        for (int i = 0; i < result.Count; ++i)
+        {
+            foreach (var v in graph[result[i]])
+            {
+                --indegrees[v];
+
+                if (indegrees[v] == 0)
                 {
-                    return [];
+                    result.Add(v);
                 }
             }
         }
 
-        return order.ToArray();
-    }
-
-    private bool TrySort(
-        int v,
-        List<List<int>> graph,
-        int[] states,
-        List<int> order)
-    {
-        if (states[v] == 0)
-        {
-            states[v] = 1;
-
-            foreach (var u in graph[v])
-            {
-                if (!TrySort(u, graph, states, order))
-                {
-                    return false;
-                }
-            }
-
-            states[v] = 2;
-            order.Add(v);
-        }
-        else if (states[v] == 1)
-        {
-            return false;
-        }
-        
-        return true;
+        return result.Count == numCourses ? result.ToArray() : [];
     }
 }
